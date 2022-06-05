@@ -6,6 +6,8 @@
 
 {% if request.user.is_authenticated %}
 <h2>Welcome {{request.user}}!</h2>
+{{ post_form | crispy }}
+
 {% else %}
 <h2>Welcome Guest!</h2>
 {% endif %}

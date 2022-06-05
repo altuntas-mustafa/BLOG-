@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponse
 from django.contrib import messages
-from django.contrib.auth import logout, login, authenticate
-from .forms import  UserForm
+from django.contrib.auth import logout, login 
+from .forms import  RegisterForm,ProfileForm
 from .models import User
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -14,10 +14,10 @@ def user_logout(request):
     return render(request, 'users/logout.html')
 
 def register(request):
-    form_user = UserForm()
+    form_user = RegisterForm()
 
     if request.method == 'POST':
-        form_user = UserForm(request.POST, request.FILES)
+        form_user = RegisterForm(request.POST, request.FILES)
 
         if form_user.is_valid() :
             user = form_user.save()
@@ -48,17 +48,20 @@ def user_login(request):
 
 def profile(request, id):
     user_profile = User.objects.get(id=id)
-    form_profile = UserForm(instance=user_profile)
+    form_profile = ProfileForm(instance=user_profile)
 
+    if request.method == "POST" :
+        form_profile = ProfileForm(request.POST,instance=user_profile)
+        
 
-    if request.method == "POST":
-        form_profile = UserForm(request.POST, instance=user_profile)
 
         if form_profile.is_valid():
-            form_profile.save()
+            user = form_profile.save()
+            login(request,user)
             return redirect("home")
     context = {
         "form_profile": form_profile,
+        "user_profile" : user_profile
     }
 
     return render(request, 'users/profile.html',context)

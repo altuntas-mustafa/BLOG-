@@ -1,7 +1,7 @@
 {% extends 'base.html' %} 
 
 {% block content %} 
-
+{% load crispy_forms_tags %}
 <h2>Registration Form</h2>
 
 {% if request.user.is_authenticated %}
@@ -14,8 +14,7 @@
 
 <form action="" method="post" enctype="multipart/form-data">
   {% csrf_token %}
-  {{ form_user.as_p }}
-  <!-- {{ form_profile.as_p }} -->
+  {{ form_user | crispy  }}
   <button type="submit" class="btn btn-danger">Sign Up</button>
   <hr>
 

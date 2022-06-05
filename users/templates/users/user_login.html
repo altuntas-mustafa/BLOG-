@@ -1,6 +1,7 @@
 {% extends 'base.html' %} 
 
 {% block content %}
+{% load crispy_forms_tags %}
 
 <div class="row">
     <div class="col-md-6 offset-md-3">
@@ -8,7 +9,7 @@
 
         <form action="{% url 'login' %}" method="post">
              {% csrf_token %}
-             {{form.as_p}}
+             {{form | crispy}}
             <button type="submit" class="btn btn-danger">Login</button>
             <hr>
             <p>Need an account? <a href="{% url 'register'  %}">Sign Up Now</a></p>
